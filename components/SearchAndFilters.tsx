@@ -1,20 +1,24 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useTodoContext } from '../contexts/TodoContext';
 import { FilterStatus, FilterPriority } from '../types/todo';
 import { hasActiveFilters } from '../utils/filters';
+import { debounce } from '../utils/performance';
 
 export function SearchAndFilters() {
     const { state, setSearchQuery, setStatusFilter, setPriorityFilter, clearFilters } = useTodoContext();
     const [searchValue, setSearchValue] = useState(state.filters.searchQuery);
 
-    // Handle search input changes with real-time filtering
+    // Debounced setter to reduce re-filtering on every keystroke
+    const debouncedSetSearch = useMemo(() => debounce((q: string) => setSearchQuery(q), 250), [setSearchQuery]);
+
+    // Handle search input changes with debouncing
     const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setSearchValue(value);
-        setSearchQuery(value);
-    }, [setSearchQuery]);
+        debouncedSetSearch(value);
+    }, [debouncedSetSearch]);
 
     // Clear search functionality
     const handleClearSearch = useCallback(() => {
@@ -47,8 +51,8 @@ export function SearchAndFilters() {
     return (
         <div className="card p-4 sm:p-6 mb-4 sm:mb-6">
             <div className="space-y-3">
-                {/* Inline Controls: Search, Status, Priority */}
-                <div className="flex flex-col sm:flex-row items-stretch gap-3">
+                {/* Inline Controls + Status Summary */}
+                <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                     {/* Search Input */}
                     <div className="relative flex-1">
                         <label htmlFor="search-tasks" className="sr-only">
@@ -134,49 +138,36 @@ export function SearchAndFilters() {
                             <option value="low" className="text-green-600">🟢 Low Priority</option>
                         </select>
                     </div>
-                </div>
 
-                {/* Filter Status and Clear Button */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-neutral-200">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                        {activeFilters ? (
-                            <>
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    Filtered
-                                </span>
-                                <span>
-                                    Showing {filteredCount} of {totalCount} tasks
-                                </span>
-                            </>
-                        ) : (
-                            <span>
-                                Showing all {totalCount} tasks
-                            </span>
+                    {/* Filter Status and Clear Button (inline) */}
+                    <div className="flex items-center gap-2 ml-auto">
+                        <span className="text-sm text-gray-600">
+                            {activeFilters ? `Showing ${filteredCount} of ${totalCount}` : `All ${totalCount}`}
+                        </span>
+                        {activeFilters && (
+                            <button
+                                type="button"
+                                onClick={handleClearAllFilters}
+                                className="btn-secondary btn-sm inline-flex items-center"
+                                aria-label="Clear all filters"
+                            >
+                                <svg
+                                    className="w-4 h-4 mr-1.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                                Clear
+                            </button>
                         )}
                     </div>
-
-                    {activeFilters && (
-                        <button
-                            type="button"
-                            onClick={handleClearAllFilters}
-                            className="btn-secondary btn-sm inline-flex items-center"
-                        >
-                            <svg
-                                className="w-4 h-4 mr-1.5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                            Clear Filters
-                        </button>
-                    )}
                 </div>
             </div>
         </div>

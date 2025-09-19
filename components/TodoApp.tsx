@@ -8,6 +8,7 @@ import { SearchAndFilters } from './SearchAndFilters';
 import ProgressVisualizationLazy from './ProgressVisualizationLazy';
 import { performanceMonitor } from '../utils/performance';
 import { hasActiveFilters } from '../utils/filters';
+import { Card } from './ui/Card';
 
 function TodoAppContent() {
     const { state, addTodo, toggleTodo, deleteTodo, editTodo } = useTodoContext();
@@ -61,25 +62,25 @@ function TodoAppContent() {
 
                     <div className="xl:col-span-2 stack-lg">
                         {/* Add Task Section */}
-                        <section aria-labelledby="add-task-heading" className="card p-6 sm:p-8">
+                        <Card as="section" aria-labelledby="add-task-heading" className="p-6 sm:p-8">
                             <h2 id="add-task-heading" className="heading-3 mb-6 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                 Add New Task
                             </h2>
                             <TodoForm onAddTodo={addTodo} />
-                        </section>
+                        </Card>
 
                         {/* Search and Filters Section */}
                         {state.totalCount > 0 && (
-                            <section aria-labelledby="search-filters-heading" className="card p-6 sm:p-8">
+                            <Card as="section" aria-labelledby="search-filters-heading" className="p-6 sm:p-8">
                                 <h2 id="search-filters-heading" className="heading-3 mb-6 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                     Search & Filter
                                 </h2>
                                 <SearchAndFilters />
-                            </section>
+                            </Card>
                         )}
 
                         {/* Task List Section */}
-                        <section aria-labelledby="task-list-heading" className="card p-6 sm:p-8">
+                        <Card as="section" aria-labelledby="task-list-heading" className="p-6 sm:p-8">
                             <div className="flex items-center justify-between mb-6">
                                 <h2 id="task-list-heading" className="heading-3 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                     Your Tasks
@@ -99,7 +100,7 @@ function TodoAppContent() {
                                 onDeleteTodo={deleteTodo}
                                 onEditTodo={editTodo}
                             />
-                        </section>
+                        </Card>
                     </div>
 
                     {/* Progress Visualization Section */}
@@ -187,16 +188,16 @@ function TodoAppContent() {
                             </section>
 
                             {/* 3D Visualization Card */}
-                            <section aria-labelledby="3d-viz-heading" className="card p-6 sm:p-8">
+                            <Card as="section" aria-labelledby="3d-viz-heading" className="p-6 sm:p-8">
                                 <h2 id="3d-viz-heading" className="heading-3 mb-6 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                     3D Visualization
                                 </h2>
                                 <ProgressVisualizationLazy todoState={state} />
-                            </section>
+                            </Card>
 
                             {/* Motivational Message Card */}
                             {state.totalCount > 0 && (
-                                <div className="card p-6 bg-gradient-to-r from-[var(--primary-50)] to-[var(--accent-50)] border-primary-200">
+                                <Card className="p-6 bg-gradient-to-r from-[var(--primary-50)] to-[var(--accent-50)] border-primary-200">
                                     <p className="body-small text-center font-medium">
                                         {state.completionPercentage === 100 ? (
                                             <span className="text-success-700">
@@ -220,7 +221,7 @@ function TodoAppContent() {
                                             </span>
                                         )}
                                     </p>
-                                </div>
+                                </Card>
                             )}
                         </div>
                     </div>
