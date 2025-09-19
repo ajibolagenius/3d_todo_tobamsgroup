@@ -5,11 +5,14 @@ A modern, interactive to-do list web application that combines practical task ma
 ## Features
 
 - **Task Management**: Create, complete, and delete tasks with a clean, intuitive interface
+- **Search & Filters**: Inline search, status, and priority filters with debounced updates
+- **Priorities**: High/Medium/Low priority with badges and visual cues
 - **3D Progress Visualization**: Watch your progress come to life with animated 3D graphics
 - **Responsive Design**: Optimized for mobile, tablet, and desktop devices
 - **Performance Optimized**: Maintains 60fps with device-specific optimizations
 - **Accessibility**: Full keyboard navigation and screen reader support
 - **Persistent Storage**: Tasks are saved locally and persist between sessions
+- **Polished Footer**: Fixed, gradient footer crediting the author
 
 ## Technology Stack
 
@@ -67,7 +70,13 @@ npm run dev
 │   ├── TodoList.tsx       # Task list display
 │   ├── TodoItem.tsx       # Individual task
 │   ├── TodoForm.tsx       # Add task form
-│   └── ProgressVisualization.tsx # 3D progress component
+│   └── ProgressVisualization.tsx # 3D progress component (orchestrator)
+│   └── three/                    # 3D subcomponents (split for maintainability)
+│       ├── Scene.tsx            # Lights and main scene assembly
+│       ├── GlassCylinderProgress.tsx # Main 3D progress object
+│       ├── CelebrationParticles.tsx  # Completion particle effect
+│       ├── Fallbacks.tsx        # Loading/error/2D fallbacks
+│       └── PriorityHoverInfo.tsx # Priority hover overlay
 ├── contexts/              # React contexts
 │   └── TodoContext.tsx    # Todo state management
 ├── hooks/                 # Custom React hooks
@@ -86,6 +95,7 @@ npm run dev
 - **Frame Rate Monitoring**: Maintains smooth 60fps animations
 - **Memory Management**: Efficient cleanup of 3D resources
 - **Progressive Enhancement**: Graceful fallback for devices without WebGL support
+- **Debounced Search**: Limits filter recomputation while typing
 
 ## Browser Support
 
@@ -99,6 +109,10 @@ npm run dev
 - **[FAQ](docs/FAQ.md)** - Frequently asked questions
 - **[API Documentation](docs/API.md)** - Technical API reference
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+
+## Credits
+
+Created by: AJIBOLA AKELEBE 🐼 — See footer in-app.
 
 ## Contributing
 

@@ -81,7 +81,7 @@ The current version focuses on simplicity with a single task list. Categories an
 
 ### Can I set due dates or reminders?
 
-Not in the current version. The app is designed for simple, immediate task tracking without complex scheduling features.
+Not in the current version. The app is designed for simple, immediate task tracking. You can prioritize tasks using High/Medium/Low priorities.
 
 ### Can I share my task list with others?
 
@@ -119,6 +119,10 @@ Common causes and solutions:
 ### What's the target frame rate for 3D animations?
 
 The app targets 60fps for smooth animations but will automatically adjust quality to maintain at least 30fps on lower-end devices.
+
+### Does the app support search and filters?
+
+Yes. You can search tasks by title/description and filter by status and priority. The search input is debounced for responsiveness.
 
 ### Does the app work well on mobile?
 

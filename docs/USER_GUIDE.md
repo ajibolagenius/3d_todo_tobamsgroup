@@ -30,8 +30,8 @@ The 3D Todo App is an interactive task management application that combines prac
 4. **Your task appears** in the list below
 
 **Tips:**
-- Keep task descriptions clear and specific
-- Tasks can be up to 500 characters long
+- Keep task titles clear and specific (max 200 characters)
+- Add details in the optional description (max 500 characters)
 - Use action words to make tasks more motivating
 
 ### Completing Tasks
@@ -224,6 +224,24 @@ A: Yes, after the initial load, the app works completely offline.
 
 **Q: Is there a mobile app?**
 A: The web app is fully optimized for mobile browsers.
+
+## Search, Filters, and Priorities
+
+### Searching Tasks
+- Use the search box above the list to find tasks by title or description.
+- Search updates are debounced, so typing won’t cause slowdowns.
+
+### Filtering
+- Status filter: show All, Completed, or Incomplete tasks.
+- Priority filter: show All, High, Medium, or Low tasks.
+- A compact inline summary shows “Showing X of Y” and a Clear button.
+
+### Priorities
+- Choose a priority when creating tasks (High/Medium/Low).
+- Priority badges and indicators appear in the list and 3D view.
+
+### Descriptions
+- Add optional details to tasks via the “Description (optional)” field.
 
 ### Technical Questions
 

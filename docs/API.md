@@ -9,22 +9,43 @@ The 3D Todo App uses a client-side architecture with local storage for data pers
 ### Todo Interface
 
 ```typescript
+type Priority = 'high' | 'medium' | 'low';
+
 interface Todo {
-  id: string;          // Unique identifier (UUID)
-  text: string;        // Task description
-  completed: boolean;  // Completion status
-  createdAt: Date;     // Creation timestamp
+  id: string;                 // Unique identifier (UUID or similar)
+  text: string;               // Task title (max 200 chars)
+  description?: string;       // Optional description (max 500 chars)
+  completed: boolean;         // Completion status
+  priority: Priority;         // Priority level
+  createdAt: Date;            // Creation timestamp
+  updatedAt: Date;            // Last update timestamp
 }
 ```
 
-### TodoState Interface
+### Filter & State Interfaces
 
 ```typescript
+type FilterStatus = 'all' | 'completed' | 'incomplete';
+type FilterPriority = 'all' | 'high' | 'medium' | 'low';
+
+interface FilterState {
+  searchQuery: string;
+  status: FilterStatus;
+  priority: FilterPriority;
+}
+
 interface TodoState {
-  todos: Todo[];                    // Array of all todos
-  completedCount: number;           // Number of completed todos
-  totalCount: number;              // Total number of todos
-  completionPercentage: number;    // Completion percentage (0-100)
+  todos: Todo[];                      // All todos
+  filteredTodos: Todo[];              // Todos after applying filters
+  filters: FilterState;               // Active filters
+  completedCount: number;             // Completed in filtered set
+  totalCount: number;                 // Count of filtered set
+  completionPercentage: number;       // Based on filtered set
+  priorityCounts: {                   // Counts in filtered set
+    high: number;
+    medium: number;
+    low: number;
+  };
 }
 ```
 
@@ -32,10 +53,16 @@ interface TodoState {
 
 ```typescript
 type TodoAction =
-  | { type: 'ADD_TODO'; payload: { text: string } }
+  | { type: 'ADD_TODO'; payload: { text: string; description?: string; priority: Priority } }
   | { type: 'TOGGLE_TODO'; payload: { id: string } }
   | { type: 'DELETE_TODO'; payload: { id: string } }
-  | { type: 'LOAD_TODOS'; payload: { todos: Todo[] } };
+  | { type: 'EDIT_TODO'; payload: { id: string; text: string; description?: string; priority: Priority } }
+  | { type: 'SET_SEARCH_QUERY'; payload: { query: string } }
+  | { type: 'SET_STATUS_FILTER'; payload: { status: FilterStatus } }
+  | { type: 'SET_PRIORITY_FILTER'; payload: { priority: FilterPriority } }
+  | { type: 'CLEAR_FILTERS' }
+  | { type: 'LOAD_TODOS'; payload: { todos: Todo[] } }
+  | { type: 'LOAD_FILTERS'; payload: { filters: FilterState } };
 ```
 
 ## Context API
@@ -47,25 +74,31 @@ The main context provider for todo state management.
 ```typescript
 interface TodoContextType {
   state: TodoState;
-  dispatch: React.Dispatch<TodoAction>;
-  addTodo: (text: string) => void;
+  addTodo: (text: string, description?: string, priority?: Priority) => void;
   toggleTodo: (id: string) => void;
   deleteTodo: (id: string) => void;
+  editTodo: (id: string, text: string, description?: string, priority?: Priority) => void;
+  setSearchQuery: (query: string) => void;
+  setStatusFilter: (status: FilterStatus) => void;
+  setPriorityFilter: (priority: FilterPriority) => void;
+  clearFilters: () => void;
 }
 ```
 
 #### Methods
 
-##### `addTodo(text: string): void`
-Creates a new todo with the provided text.
+##### `addTodo(text: string, description?: string, priority = 'medium'): void`
+Creates a new todo with optional description and priority.
 
 **Parameters:**
-- `text` (string): The todo description
+- `text` (string): The todo title (required)
+- `description` (string?): Optional details
+- `priority` (Priority): 'high' | 'medium' | 'low' (default 'medium')
 
 **Behavior:**
-- Generates a unique ID using crypto.randomUUID()
-- Sets completed to false
-- Sets createdAt to current date
+- Generates a unique ID
+- Sets completed to false, priority to provided value
+- Sets createdAt/updatedAt
 - Saves to localStorage
 - Updates the UI immediately
 
@@ -101,9 +134,14 @@ Main hook for todo state management using useReducer.
 ```typescript
 function useTodos(): {
   state: TodoState;
-  addTodo: (text: string) => void;
+  addTodo: (text: string, description?: string, priority?: Priority) => void;
   toggleTodo: (id: string) => void;
   deleteTodo: (id: string) => void;
+  editTodo: (id: string, text: string, description?: string, priority?: Priority) => void;
+  setSearchQuery: (query: string) => void;
+  setStatusFilter: (status: FilterStatus) => void;
+  setPriorityFilter: (priority: FilterPriority) => void;
+  clearFilters: () => void;
 }
 ```
 
@@ -117,8 +155,10 @@ function useTodos(): {
 
 ### localStorage.ts
 
-#### `saveTodos(todos: Todo[]): void`
-Saves todos to localStorage with error handling.
+#### `loadTodosFromStorage(): Todo[]`
+#### `saveTodosToStorage(todos: Todo[], filters?: FilterState): boolean`
+#### `loadFiltersFromStorage(): FilterState`
+#### `saveFiltersToStorage(filters: FilterState): boolean`
 
 **Parameters:**
 - `todos` (Todo[]): Array of todos to save
@@ -141,8 +181,7 @@ Loads todos from localStorage with validation.
 
 ### validation.ts
 
-#### `validateTodoText(text: string): boolean`
-Validates todo text input.
+#### `validateTodoText(text: string): { isValid: boolean; sanitizedValue?: string; error?: string }`
 
 **Parameters:**
 - `text` (string): Text to validate
@@ -152,11 +191,10 @@ Validates todo text input.
 
 **Validation Rules:**
 - Must not be empty or only whitespace
-- Maximum length of 500 characters
-- No HTML tags allowed
+- Max length 200, min length 1
+- Sanitization removes unsafe patterns; rejects if significantly altered
 
-#### `sanitizeTodoText(text: string): string`
-Sanitizes todo text for safe storage and display.
+#### `validateTodoDescription(text?: string): { isValid: boolean; sanitizedValue?: string; error?: string }`
 
 **Parameters:**
 - `text` (string): Text to sanitize
@@ -166,13 +204,14 @@ Sanitizes todo text for safe storage and display.
 
 **Sanitization:**
 - Trims whitespace
-- Removes HTML tags
-- Escapes special characters
+- Optional field; max length 500; sanitized like title
 
 ### performance.ts
 
-#### `measurePerformance(name: string, fn: () => void): void`
-Measures and logs performance of a function.
+Key utilities:
+- `performanceMonitor`: fps/memory tracking
+- `debounce(fn, wait)`, `throttle(fn, limit)`
+- `MemoryManager`: register disposables and automatic cleanup
 
 **Parameters:**
 - `name` (string): Performance measurement name
@@ -191,19 +230,16 @@ measurePerformance('todo-render', () => {
 
 ```typescript
 interface ProgressVisualizationProps {
-  completionPercentage: number;  // 0-100
-  totalTasks: number;           // Total number of tasks
-  isComplete: boolean;          // Whether all tasks are complete
+  todoState: TodoState; // filtered-based metrics used in the scene
 }
 ```
 
 ### 3D Scene Configuration
 
 #### Default Settings
-- **Camera Position**: [0, 0, 5]
-- **Field of View**: 75 degrees
-- **Ambient Light**: 0.6 intensity
-- **Directional Light**: 1.0 intensity at [10, 10, 5]
+- **Camera Position**: [0, 0, 6]
+- **Field of View**: 50 degrees
+- **Ambient/Directional Lights** tuned per device performance
 
 #### Performance Settings
 - **Target FPS**: 60
@@ -250,10 +286,9 @@ interface AppError {
 - localStorage operation times
 - Memory usage for 3D scenes
 
-### Performance Thresholds
-- Frame rate: Minimum 30fps, target 60fps
-- Initial load: Maximum 3 seconds
-- Todo operations: Maximum 100ms response time
+### Performance Notes
+- Debounced search input reduces filter churn
+- Device-level adjustments for shadows and DPR
 
 ## Security Considerations
 
@@ -297,3 +332,12 @@ const mockTodos: Todo[] = [
 ```
 
 This API documentation provides a comprehensive reference for developers working with the 3D Todo App codebase.
+##### `editTodo(id: string, text: string, description?: string, priority?: Priority): void`
+Updates fields on an existing todo.
+
+##### `setSearchQuery(query: string): void`
+Sets the live search query; input is debounced in UI.
+
+##### `setStatusFilter(status: FilterStatus): void`
+##### `setPriorityFilter(priority: FilterPriority): void`
+##### `clearFilters(): void`

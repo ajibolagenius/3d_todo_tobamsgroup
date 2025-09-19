@@ -46,7 +46,7 @@ Thank you for your interest in contributing to the 3D Todo App! This document pr
 
 - Use functional components with hooks
 - Prefer Server Components when possible, use Client Components only when needed
-- Keep 3D components performant (target 60fps)
+- Keep 3D components performant (target 60fps) and split large files into smaller subcomponents (see `components/three/`)
 - Ensure all components are accessible (ARIA labels, keyboard navigation)
 - Use Tailwind CSS for styling
 
@@ -67,7 +67,12 @@ npm test
 - Monitor 3D rendering performance
 - Optimize for mobile devices
 - Use React.memo() for expensive components
-- Implement proper cleanup for 3D resources
+- Implement proper cleanup for 3D resources (see `MemoryManager` in `utils/performance.ts`)
+- Debounce user input where appropriate (e.g., search input in filters)
+
+### UI Consistency
+- Prefer the `Card` component (`components/ui/Card.tsx`) rather than duplicating `card p-6 sm:p-8` classes
+- Keep Search & Filters compact and accessible; use `sr-only` labels and inline summary
 
 ## Submitting Changes
 
