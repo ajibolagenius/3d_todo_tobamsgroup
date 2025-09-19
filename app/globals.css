@@ -187,6 +187,7 @@
   html {
     scroll-behavior: smooth;
     /* Prevent zoom on iOS when focusing inputs */
+    text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   }
 
