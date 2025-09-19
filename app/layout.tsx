@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     openGraph: {
         type: 'website',
         locale: 'en_US',
-        url: 'https://3d-todo-app.vercel.app',
+        url: 'https://3d_todo_tobamsgroup.vercel.app',
         title: '3D Todo App',
         description: 'A modern, interactive to-do list web application with engaging 3D progress visualization.',
         siteName: '3D Todo App',

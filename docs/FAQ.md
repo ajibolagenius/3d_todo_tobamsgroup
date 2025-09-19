@@ -216,7 +216,7 @@ Feature prioritization is based on community feedback and usage patterns. Popula
 
 1. **Check this FAQ** for common questions
 2. **Read the [User Guide](USER_GUIDE.md)** for detailed usage instructions
-3. **Search [GitHub Issues](https://github.com/ajibolagenius/3d-todo-app/issues)** for similar problems
+3. **Search [GitHub Issues](https://github.com/ajibolagenius/3d_todo_tobamsgroup/issues)** for similar problems
 4. **Create a new issue** if your problem isn't covered
 
 ### How do I stay updated on new features?
@@ -234,7 +234,7 @@ Currently, GitHub Issues and Discussions serve as the main community platform. A
 
 If your question isn't answered here:
 
-1. **Search existing [GitHub Issues](https://github.com/ajibolagenius/3d-todo-app/issues)**
+1. **Search existing [GitHub Issues](https://github.com/ajibolagenius/3d_todo_tobamsgroup/issues)**
 2. **Create a new issue** with the "question" label
 3. **Check our other documentation** in the `docs/` folder
 

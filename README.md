@@ -31,8 +31,8 @@ A modern, interactive to-do list web application that combines practical task ma
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd 3d-todo-app
+git clone https://github.com/ajibolagenius/3d_todo_tobamsgroup.git
+cd 3d_todo_tobamsgroup
 ```
 
 2. Install dependencies:
@@ -99,8 +99,6 @@ npm run dev
 - **[FAQ](docs/FAQ.md)** - Frequently asked questions
 - **[API Documentation](docs/API.md)** - Technical API reference
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
-- **[Deployment Guide](docs/DEPLOYMENT.md)** - Deployment instructions for various platforms
-- **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)** - Common issues and solutions
 
 ## Contributing
 
@@ -108,9 +106,8 @@ Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of
 
 ## Support
 
-- **Issues**: Report bugs and request features on [GitHub Issues](https://github.com/your-username/3d-todo-app/issues)
+- **Issues**: Report bugs and request features on [GitHub Issues](https://github.com/your-username/3d_todo_tobamsgroup/issues)
 - **Documentation**: Check our comprehensive documentation in the `docs/` folder
-- **Troubleshooting**: See the [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for common issues
 
 ## License
 

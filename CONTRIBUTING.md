@@ -16,8 +16,8 @@ Thank you for your interest in contributing to the 3D Todo App! This document pr
 1. Fork the repository on GitHub
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/ajibolagenius/3d-todo-app.git
-   cd 3d-todo-app
+   git clone https://github.com/ajibolagenius/3d_todo_tobamsgroup.git
+   cd 3d_todo_tobamsgroup
    ```
 
 3. Install dependencies:

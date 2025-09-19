@@ -44,9 +44,9 @@ MIT License details for the project.
 
 ## Quick Links
 
-- **[GitHub Repository](https://github.com/ajibolagenius/3d-todo-app)** - Source code and issue tracking
-- **[Live Demo](https://your-demo-url.com)** - Try the app online
-- **[Report Issues](https://github.com/ajibolagenius/3d-todo-app/issues)** - Bug reports and feature requests
+- **[GitHub Repository](https://github.com/ajibolagenius/3d_todo_tobamsgroup)** - Source code and issue tracking
+- **[Live Demo](https://3dtodotobamsgroup.vercel.app/)** - Try the app online
+- **[Report Issues](https://github.com/ajibolagenius/3d_todo_tobamsgroup/issues)** - Bug reports and feature requests
 
 ## Documentation Structure
 
