@@ -208,11 +208,11 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                                 <option value="low">● Low Priority</option>
                             </select>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
                             <button
                                 onClick={handleSaveEdit}
                                 disabled={isSaving || editText.trim() === ''}
-                                className="btn-brand text-sm min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                                className="btn-brand w-full sm:w-auto text-sm min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                                 aria-label="Save task changes"
                             >
                                 <span className="flex items-center justify-center gap-1">
@@ -225,7 +225,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                             <button
                                 onClick={handleCancelEdit}
                                 disabled={isSaving}
-                                className="btn btn-secondary text-sm min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                                className="btn btn-secondary w-full sm:w-auto text-sm min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                                 aria-label="Cancel task editing"
                             >
                                 Cancel
@@ -385,7 +385,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                         <button
                             onClick={handleConfirmDelete}
                             disabled={isDeleting}
-                            className="btn btn-danger px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                            className="btn btn-danger w-full sm:w-auto px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                             aria-label="Confirm delete task"
                         >
                             <span className="flex items-center justify-center gap-1">
@@ -398,7 +398,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                         <button
                             onClick={handleCancelDelete}
                             disabled={isDeleting}
-                            className="btn btn-secondary px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                            className="btn btn-secondary w-full sm:w-auto px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                             aria-label="Cancel delete task"
                         >
                             Cancel

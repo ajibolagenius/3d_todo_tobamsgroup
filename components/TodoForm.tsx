@@ -220,8 +220,8 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                 </div>
 
                 {/* Priority and Submit Row */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
-                    <div className="w-full sm:w-auto">
+                <div className="flex flex-row flex-wrap items-end gap-3 sm:gap-4">
+                    <div className="w-auto min-w-[220px]">
                         <label
                             htmlFor="priority-select"
                             className="block text-sm font-medium text-neutral-700 mb-2"
@@ -263,11 +263,11 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                         </div>
                     </div>
 
-                    <div className="w-full sm:w-auto sm:flex-shrink-0 sm:self-end">
+                    <div className="w-auto flex-shrink-0 self-end ml-auto">
                         <button
                             type="submit"
                             disabled={isSubmitting || (inputValue.length > 200) || (description.length > 500)}
-                            className="btn-brand w-full sm:w-auto min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                            className="btn-brand btn-lg px-8 transform hover:scale-105 active:scale-95 disabled:transform-none shadow-primary"
                             aria-label="Add task"
                         >
                             <span className="flex items-center justify-center gap-2">
