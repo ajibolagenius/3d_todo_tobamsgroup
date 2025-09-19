@@ -46,13 +46,14 @@ export function SearchAndFilters() {
 
     return (
         <div className="card p-4 sm:p-6 mb-4 sm:mb-6">
-            <div className="space-y-4">
-                {/* Search Input Section */}
-                <div className="relative">
-                    <label htmlFor="search-tasks" className="sr-only">
-                        Search tasks
-                    </label>
-                    <div className="relative">
+            <div className="space-y-3">
+                {/* Inline Controls: Search, Status, Priority */}
+                <div className="flex flex-col sm:flex-row items-stretch gap-3">
+                    {/* Search Input */}
+                    <div className="relative flex-1">
+                        <label htmlFor="search-tasks" className="sr-only">
+                            Search tasks
+                        </label>
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg
                                 className="h-5 w-5 text-gray-400"
@@ -75,8 +76,7 @@ export function SearchAndFilters() {
                             value={searchValue}
                             onChange={handleSearchChange}
                             placeholder="Search tasks and descriptions..."
-                            className="input pl-10 pr-10 py-3 text-sm sm:text-base"
-                            aria-describedby="search-help"
+                            className="input w-full pl-10 pr-10 py-3 text-sm sm:text-base"
                         />
                         {searchValue && (
                             <button
@@ -101,23 +101,16 @@ export function SearchAndFilters() {
                             </button>
                         )}
                     </div>
-                    <p id="search-help" className="mt-1 text-xs text-gray-500">
-                        Search across task titles and descriptions
-                    </p>
-                </div>
 
-                {/* Filter Controls Section */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Status Filter */}
-                    <div>
-                        <label htmlFor="status-filter" className="block text-sm font-medium text-neutral-700 mb-2">
-                            Status
-                        </label>
+                    <div className="min-w-[9rem]">
+                        <label htmlFor="status-filter" className="sr-only">Status</label>
                         <select
                             id="status-filter"
                             value={state.filters.status}
                             onChange={handleStatusFilterChange}
-                            className="select px-3 py-2 text-sm sm:text-base"
+                            className="select w-full px-3 py-3 text-sm sm:text-base"
+                            aria-label="Filter by status"
                         >
                             <option value="all">All Tasks</option>
                             <option value="incomplete">Incomplete</option>
@@ -126,26 +119,19 @@ export function SearchAndFilters() {
                     </div>
 
                     {/* Priority Filter */}
-                    <div>
-                        <label htmlFor="priority-filter" className="block text-sm font-medium text-neutral-700 mb-2">
-                            Priority
-                        </label>
+                    <div className="min-w-[10rem]">
+                        <label htmlFor="priority-filter" className="sr-only">Priority</label>
                         <select
                             id="priority-filter"
                             value={state.filters.priority}
                             onChange={handlePriorityFilterChange}
-                            className="select px-3 py-2 text-sm sm:text-base"
+                            className="select w-full px-3 py-3 text-sm sm:text-base"
+                            aria-label="Filter by priority"
                         >
                             <option value="all">All Priorities</option>
-                            <option value="high" className="text-red-600">
-                                🔴 High Priority
-                            </option>
-                            <option value="medium" className="text-yellow-600">
-                                🟡 Medium Priority
-                            </option>
-                            <option value="low" className="text-green-600">
-                                🟢 Low Priority
-                            </option>
+                            <option value="high" className="text-red-600">🔴 High Priority</option>
+                            <option value="medium" className="text-yellow-600">🟡 Medium Priority</option>
+                            <option value="low" className="text-green-600">🟢 Low Priority</option>
                         </select>
                     </div>
                 </div>
