@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import FixedFooter from '../components/ui/FixedFooter'
 
 const inter = Inter({
     subsets: ['latin'],
@@ -68,7 +69,10 @@ export default function RootLayout({
             <body className={`${inter.className} antialiased`}>
                 <div id="root">
                     {children}
+                    {/* Spacer to prevent content being hidden behind fixed footer */}
+                    <div aria-hidden="true" className="h-16" />
                 </div>
+                <FixedFooter />
             </body>
         </html>
     )
