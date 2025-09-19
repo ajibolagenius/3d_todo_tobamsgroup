@@ -173,17 +173,17 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                 {isEditing ? (
                     <div className="space-y-3">
                         <div>
-                            <input
-                                ref={editInputRef}
-                                type="text"
-                                value={editText}
-                                onChange={(e) => setEditText(e.target.value)}
-                                onKeyDown={handleEditKeyDown}
-                                disabled={isSaving}
-                                className="w-full px-3 py-2 text-sm font-medium border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                                placeholder="Enter task text..."
-                                aria-label="Edit task text"
-                            />
+                        <input
+                            ref={editInputRef}
+                            type="text"
+                            value={editText}
+                            onChange={(e) => setEditText(e.target.value)}
+                            onKeyDown={handleEditKeyDown}
+                            disabled={isSaving}
+                            className="input px-3 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            placeholder="Enter task text..."
+                            aria-label="Edit task text"
+                        />
                         </div>
                         <TaskDescription
                             description=""
@@ -192,7 +192,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                             onEditChange={setEditDescription}
                         />
                         <div>
-                            <label htmlFor={`priority-${todo.id}`} className="block text-xs font-medium text-gray-700 mb-1">
+                            <label htmlFor={`priority-${todo.id}`} className="block text-xs font-medium text-neutral-700 mb-1">
                                 Priority
                             </label>
                             <select
@@ -200,7 +200,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                                 value={editPriority}
                                 onChange={(e) => setEditPriority(e.target.value as Priority)}
                                 disabled={isSaving}
-                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[44px] sm:min-h-[36px]"
+                                className="select px-3 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[44px] sm:min-h-[36px]"
                                 aria-label="Edit task priority"
                             >
                                 <option value="high">● High Priority</option>
@@ -212,7 +212,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                             <button
                                 onClick={handleSaveEdit}
                                 disabled={isSaving || editText.trim() === ''}
-                                className="px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 touch-manipulation min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                                className="btn-brand text-sm min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                                 aria-label="Save task changes"
                             >
                                 <span className="flex items-center justify-center gap-1">
@@ -225,7 +225,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                             <button
                                 onClick={handleCancelEdit}
                                 disabled={isSaving}
-                                className="px-3 py-2 text-sm bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 touch-manipulation min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                                className="btn btn-secondary text-sm min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                                 aria-label="Cancel task editing"
                             >
                                 Cancel
@@ -310,11 +310,11 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
 
                             {/* Enhanced priority badge */}
                             <div
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all duration-200 touch-manipulation min-h-[28px] ${todo.priority === 'high'
-                                    ? 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-all duration-200 touch-manipulation min-h-[28px] ${todo.priority === 'high'
+                                    ? 'bg-red-100 text-red-700 border-red-200 hover:bg-red-100 shadow-error'
                                     : todo.priority === 'medium'
-                                        ? 'bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100'
-                                        : 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100'
+                                        ? 'bg-yellow-100 text-yellow-700 border-yellow-200 hover:bg-yellow-100 shadow-warning'
+                                        : 'bg-green-100 text-green-700 border-green-200 hover:bg-green-100 shadow-success'
                                     } ${todo.completed ? 'opacity-60' : ''}`}
                                 aria-label={`Priority: ${todo.priority}`}
                                 title={`${todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)} Priority`}
@@ -336,9 +336,9 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                             {/* Status badge */}
                             <div
                                 id={`todo-status-${todo.id}`}
-                                className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border transition-all duration-200 min-h-[28px] ${todo.completed
-                                    ? 'bg-green-50 text-green-700 border-green-200'
-                                    : 'bg-blue-50 text-blue-700 border-blue-200'
+                                className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border transition-all duration-200 min-h-[28px] ${todo.completed
+                                    ? 'bg-green-100 text-green-700 border-green-200 shadow-success'
+                                    : 'bg-blue-100 text-blue-700 border-blue-200 shadow-accent'
                                     }`}
                                 aria-label={`Task status: ${todo.completed ? 'completed' : 'pending'}`}
                             >
@@ -354,7 +354,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                     <button
                         onClick={handleDeleteClick}
                         disabled={isToggling || isDeleting}
-                        className="sm:opacity-0 sm:group-hover:opacity-100 p-2 sm:p-2 text-gray-400 hover:text-red-600 active:text-red-700 hover:bg-red-50 active:bg-red-100 rounded-md transition-all duration-200 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] flex items-center justify-center transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                        className="sm:opacity-0 sm:group-hover:opacity-100 btn btn-ghost text-error-600 hover:bg-red-50 active:bg-red-100 focus:opacity-100 touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px] flex items-center justify-center transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         aria-label={`Delete task: ${todo.text}`}
                         title="Delete task"
                     >
@@ -385,7 +385,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                         <button
                             onClick={handleConfirmDelete}
                             disabled={isDeleting}
-                            className="px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs bg-red-600 text-white rounded hover:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 touch-manipulation min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                            className="btn btn-danger px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                             aria-label="Confirm delete task"
                         >
                             <span className="flex items-center justify-center gap-1">
@@ -398,7 +398,7 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                         <button
                             onClick={handleCancelDelete}
                             disabled={isDeleting}
-                            className="px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs bg-gray-300 text-gray-700 rounded hover:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 touch-manipulation min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                            className="btn btn-secondary px-3 py-2 sm:px-2 sm:py-1 text-sm sm:text-xs min-h-[44px] sm:min-h-[32px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                             aria-label="Cancel delete task"
                         >
                             Cancel

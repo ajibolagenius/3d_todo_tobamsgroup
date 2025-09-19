@@ -45,7 +45,7 @@ export function SearchAndFilters() {
     const totalCount = state.totalCount;
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+        <div className="card p-4 sm:p-6 mb-4 sm:mb-6">
             <div className="space-y-4">
                 {/* Search Input Section */}
                 <div className="relative">
@@ -75,7 +75,7 @@ export function SearchAndFilters() {
                             value={searchValue}
                             onChange={handleSearchChange}
                             placeholder="Search tasks and descriptions..."
-                            className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                            className="input pl-10 pr-10 py-3 text-sm sm:text-base"
                             aria-describedby="search-help"
                         />
                         {searchValue && (
@@ -110,14 +110,14 @@ export function SearchAndFilters() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Status Filter */}
                     <div>
-                        <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="status-filter" className="block text-sm font-medium text-neutral-700 mb-2">
                             Status
                         </label>
                         <select
                             id="status-filter"
                             value={state.filters.status}
                             onChange={handleStatusFilterChange}
-                            className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                            className="select px-3 py-2 text-sm sm:text-base"
                         >
                             <option value="all">All Tasks</option>
                             <option value="incomplete">Incomplete</option>
@@ -127,14 +127,14 @@ export function SearchAndFilters() {
 
                     {/* Priority Filter */}
                     <div>
-                        <label htmlFor="priority-filter" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="priority-filter" className="block text-sm font-medium text-neutral-700 mb-2">
                             Priority
                         </label>
                         <select
                             id="priority-filter"
                             value={state.filters.priority}
                             onChange={handlePriorityFilterChange}
-                            className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
+                            className="select px-3 py-2 text-sm sm:text-base"
                         >
                             <option value="all">All Priorities</option>
                             <option value="high" className="text-red-600">
@@ -151,7 +151,7 @@ export function SearchAndFilters() {
                 </div>
 
                 {/* Filter Status and Clear Button */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-gray-100">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-neutral-200">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                         {activeFilters ? (
                             <>
@@ -173,7 +173,7 @@ export function SearchAndFilters() {
                         <button
                             type="button"
                             onClick={handleClearAllFilters}
-                            className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors duration-200 border border-gray-300 hover:border-gray-400"
+                            className="btn-secondary btn-sm inline-flex items-center"
                         >
                             <svg
                                 className="w-4 h-4 mr-1.5"

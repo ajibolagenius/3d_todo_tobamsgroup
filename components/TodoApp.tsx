@@ -44,7 +44,7 @@ function TodoAppContent() {
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 max-w-7xl">
                 <header className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <h1 className="heading-1 sm:text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-primary-600 via-accent-600 to-primary-700 bg-clip-text text-transparent mb-4 sm:mb-6">
+                    <h1 className="heading-1 sm:text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-[var(--primary-600)] via-[var(--accent-600)] to-[var(--primary-700)] bg-clip-text text-transparent mb-4 sm:mb-6">
                         3D Todo App
                     </h1>
                     <p className="body-large text-neutral-600 max-w-2xl mx-auto">
@@ -62,7 +62,7 @@ function TodoAppContent() {
                     <div className="xl:col-span-2 stack-lg">
                         {/* Add Task Section */}
                         <section aria-labelledby="add-task-heading" className="card p-6 sm:p-8">
-                            <h2 id="add-task-heading" className="heading-3 mb-6 text-neutral-900">
+                            <h2 id="add-task-heading" className="heading-3 mb-6 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                 Add New Task
                             </h2>
                             <TodoForm onAddTodo={addTodo} />
@@ -71,7 +71,7 @@ function TodoAppContent() {
                         {/* Search and Filters Section */}
                         {state.totalCount > 0 && (
                             <section aria-labelledby="search-filters-heading" className="card p-6 sm:p-8">
-                                <h2 id="search-filters-heading" className="heading-3 mb-6 text-neutral-900">
+                                <h2 id="search-filters-heading" className="heading-3 mb-6 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                     Search & Filter
                                 </h2>
                                 <SearchAndFilters />
@@ -81,7 +81,7 @@ function TodoAppContent() {
                         {/* Task List Section */}
                         <section aria-labelledby="task-list-heading" className="card p-6 sm:p-8">
                             <div className="flex items-center justify-between mb-6">
-                                <h2 id="task-list-heading" className="heading-3 text-neutral-900">
+                                <h2 id="task-list-heading" className="heading-3 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                     Your Tasks
                                 </h2>
                                 {state.totalCount > 0 && (
@@ -188,7 +188,7 @@ function TodoAppContent() {
 
                             {/* 3D Visualization Card */}
                             <section aria-labelledby="3d-viz-heading" className="card p-6 sm:p-8">
-                                <h2 id="3d-viz-heading" className="heading-3 mb-6 text-neutral-900">
+                                <h2 id="3d-viz-heading" className="heading-3 mb-6 bg-gradient-to-r from-[var(--primary-700)] to-[var(--accent-700)] bg-clip-text text-transparent">
                                     3D Visualization
                                 </h2>
                                 <ProgressVisualizationLazy todoState={state} />
@@ -196,7 +196,7 @@ function TodoAppContent() {
 
                             {/* Motivational Message Card */}
                             {state.totalCount > 0 && (
-                                <div className="card p-6 bg-gradient-to-r from-primary-50 to-accent-50 border-primary-200">
+                                <div className="card p-6 bg-gradient-to-r from-[var(--primary-50)] to-[var(--accent-50)] border-primary-200">
                                     <p className="body-small text-center font-medium">
                                         {state.completionPercentage === 100 ? (
                                             <span className="text-success-700">

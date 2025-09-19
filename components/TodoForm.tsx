@@ -149,12 +149,7 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                             value={inputValue}
                             onChange={handleInputChange}
                             placeholder="What needs to be done?"
-                            className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 touch-manipulation ${isSubmitting
-                                ? 'border-gray-300 hover:border-gray-400 focus:border-blue-500 opacity-50 cursor-not-allowed'
-                                : error
-                                    ? 'border-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-500'
-                                    : 'border-gray-300 hover:border-gray-400 focus:border-blue-500'
-                                }`}
+                            className={`input px-4 py-3 sm:py-2 text-base sm:text-sm touch-manipulation ${error ? 'input-error' : ''}`}
                             disabled={isSubmitting}
                             maxLength={200}
                             aria-describedby="todo-input-help"
@@ -171,13 +166,12 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                     {/* Character count */}
                     <div className="flex justify-between items-center mt-1">
                         <div
-                            className={`text-xs ${error ? 'text-red-600' : 'text-gray-500'
-                                }`}
+                            className={`text-xs ${error ? 'text-red-600' : 'text-neutral-500'}`}
                             id="todo-input-help"
                         >
                             {error || 'Enter a task description'}
                         </div>
-                        <div className={`text-xs ${inputValue.length > 180 ? 'text-amber-600' : inputValue.length > 190 ? 'text-red-600' : 'text-gray-400'}`}>
+                        <div className={`text-xs ${inputValue.length > 180 ? 'text-amber-600' : inputValue.length > 190 ? 'text-red-600' : 'text-neutral-400'}`}>
                             {inputValue.length}/200
                         </div>
                     </div>
@@ -189,7 +183,7 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                 <div className="flex-1">
                     <label
                         htmlFor="description-input"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="block text-sm font-medium text-neutral-700 mb-2"
                     >
                         Description (optional)
                     </label>
@@ -201,12 +195,7 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                             placeholder="Add additional details about this task..."
                             rows={3}
                             maxLength={500}
-                            className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 touch-manipulation resize-vertical min-h-[80px] ${isSubmitting
-                                ? 'border-gray-300 hover:border-gray-400 focus:border-blue-500 opacity-50 cursor-not-allowed'
-                                : descriptionError
-                                    ? 'border-red-300 hover:border-red-400 focus:border-red-500 focus:ring-red-500'
-                                    : 'border-gray-300 hover:border-gray-400 focus:border-blue-500'
-                                }`}
+                            className={`textarea px-4 py-3 sm:py-2 text-base sm:text-sm touch-manipulation min-h-[80px] ${descriptionError ? 'input-error' : ''}`}
                             disabled={isSubmitting}
                             aria-describedby="description-help"
                             aria-invalid={!!descriptionError}
@@ -217,13 +206,12 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                     {/* Character count for description */}
                     <div className="flex justify-between items-center mt-1">
                         <div
-                            className={`text-xs ${descriptionError ? 'text-red-600' : 'text-gray-500'
-                                }`}
+                            className={`text-xs ${descriptionError ? 'text-red-600' : 'text-neutral-500'}`}
                             id="description-help"
                         >
                             {descriptionError || 'Optional details about the task'}
                         </div>
-                        <div className={`text-xs ${description.length > 450 ? 'text-amber-600' : description.length > 480 ? 'text-red-600' : 'text-gray-400'}`}>
+                        <div className={`text-xs ${description.length > 450 ? 'text-amber-600' : description.length > 480 ? 'text-red-600' : 'text-neutral-400'}`}>
                             {description.length}/500
                         </div>
                     </div>
@@ -236,7 +224,7 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                     <div className="w-full sm:w-auto">
                         <label
                             htmlFor="priority-select"
-                            className="block text-sm font-medium text-gray-700 mb-2"
+                            className="block text-sm font-medium text-neutral-700 mb-2"
                         >
                             Priority Level
                         </label>
@@ -245,7 +233,7 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                                 id="priority-select"
                                 value={priority}
                                 onChange={(e) => setPriority(e.target.value as Priority)}
-                                className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 touch-manipulation min-h-[44px] sm:min-h-[36px] bg-white appearance-none cursor-pointer ${priority === 'high'
+                                className={`select px-4 py-3 sm:py-2 text-base sm:text-sm touch-manipulation min-h-[44px] sm:min-h-[36px] bg-white appearance-none cursor-pointer ${priority === 'high'
                                     ? 'border-red-300 bg-red-50 text-red-700'
                                     : priority === 'medium'
                                         ? 'border-yellow-300 bg-yellow-50 text-yellow-700'
@@ -279,7 +267,7 @@ export function TodoForm({ onAddTodo }: TodoFormProps) {
                         <button
                             type="submit"
                             disabled={isSubmitting || (inputValue.length > 200) || (description.length > 500)}
-                            className="w-full sm:w-auto px-6 py-3 sm:py-2 bg-blue-600 text-white text-base sm:text-sm font-medium rounded-md hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 touch-manipulation min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
+                            className="btn-brand w-full sm:w-auto min-h-[44px] sm:min-h-[36px] transform hover:scale-105 active:scale-95 disabled:transform-none"
                             aria-label="Add task"
                         >
                             <span className="flex items-center justify-center gap-2">

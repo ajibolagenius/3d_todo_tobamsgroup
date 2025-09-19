@@ -99,7 +99,7 @@ export function TodoList({ todos, filteredTodos, hasFilters, totalCount, onToggl
         <div className="space-y-4 sm:space-y-6">
             {/* Result Count Display - Only show when filters are active */}
             {hasFilters && displayCount > 0 && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 shadow-accent">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <svg
@@ -231,20 +231,20 @@ export function TodoList({ todos, filteredTodos, hasFilters, totalCount, onToggl
                             </svg>
                             {hasFilters ? 'Filtered Progress:' : 'Progress:'} {completedTodos.length} of {displayTodos.length} tasks completed
                         </span>
-                        <span className={`font-medium text-base sm:text-sm px-2 py-1 rounded-full ${completedTodos.length === displayTodos.length
-                            ? 'bg-green-100 text-green-700'
+                        <span className={`font-semibold text-base sm:text-sm px-2 py-1 rounded-full border ${completedTodos.length === displayTodos.length
+                            ? 'bg-green-100 text-green-700 border-green-200'
                             : completedTodos.length > displayTodos.length / 2
-                                ? 'bg-blue-100 text-blue-700'
-                                : 'bg-gray-100 text-gray-700'
+                                ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                : 'bg-gray-100 text-gray-700 border-gray-200'
                             }`}>
                             {displayTodos.length > 0 ? Math.round((completedTodos.length / displayTodos.length) * 100) : 0}%
                         </span>
                     </div>
                     <div className="mt-3 w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                         <div
-                            className={`h-3 rounded-full transition-all duration-700 ease-out ${completedTodos.length === displayTodos.length
-                                ? 'bg-gradient-to-r from-green-500 to-green-600'
-                                : 'bg-gradient-to-r from-blue-500 to-blue-600'
+                            className={`h-3 rounded-full transition-all duration-700 ease-out bg-gradient-to-r ${completedTodos.length === displayTodos.length
+                                ? 'from-[var(--success-500)] to-[var(--success-600)]'
+                                : 'from-[var(--primary-600)] to-[var(--accent-600)]'
                                 }`}
                             style={{
                                 width: `${displayTodos.length > 0 ? (completedTodos.length / displayTodos.length) * 100 : 0}%`
@@ -260,11 +260,11 @@ export function TodoList({ todos, filteredTodos, hasFilters, totalCount, onToggl
                     {/* Motivational message */}
                     <div className="mt-2 text-xs text-center">
                         {completedTodos.length === displayTodos.length ? (
-                            <span className="text-green-600 font-medium">
+                            <span className="text-green-600 font-semibold">
                                 🎉 {hasFilters ? 'All filtered tasks completed!' : 'All tasks completed!'} Great job!
                             </span>
                         ) : completedTodos.length > displayTodos.length / 2 ? (
-                            <span className="text-blue-600">🚀 You&apos;re more than halfway there!</span>
+                            <span className="text-blue-600 font-medium">🚀 You&apos;re more than halfway there!</span>
                         ) : completedTodos.length > 0 ? (
                             <span className="text-gray-600">✨ Keep going, you&apos;re making progress!</span>
                         ) : (
