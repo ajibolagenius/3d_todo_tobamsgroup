@@ -1,13 +1,12 @@
 'use client';
 
 import React, { Suspense, useRef, useMemo, useCallback } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ErrorBoundary } from './ErrorBoundary';
 import { getDevicePerformanceLevel, getWebGLLevel, MemoryManager } from '../utils/performance';
 import { TodoState } from '../types/todo';
 
-// Removed unused function getProgressColor
 
 function getPriorityColor(priority: 'high' | 'medium' | 'low'): string {
     switch (priority) {
@@ -26,7 +25,6 @@ function getPriorityEmissiveColor(priority: 'high' | 'medium' | 'low'): string {
         default: return '#4b5563';
     }
 }
-
 
 
 const CelebrationParticles = React.memo(function CelebrationParticles({
@@ -149,6 +147,137 @@ const CelebrationParticles = React.memo(function CelebrationParticles({
                 sizeAttenuation
             />
         </points>
+    );
+});
+
+// New single-fill glass cylinder progress (matches reference concept)
+const GlassCylinderProgress = React.memo(function GlassCylinderProgress({
+    todoState,
+    performanceLevel,
+    hoveredPriority,
+    setHoveredPriority,
+}: {
+    todoState: TodoState;
+    performanceLevel: 'low' | 'medium' | 'high';
+    hoveredPriority: 'high' | 'medium' | 'low' | null;
+    setHoveredPriority: (priority: 'high' | 'medium' | 'low' | null) => void;
+}) {
+    const groupRef = useRef<THREE.Group>(null);
+    const glassRef = useRef<THREE.Mesh>(null);
+    const liquidRef = useRef<THREE.Mesh>(null);
+    const liquidTopRef = useRef<THREE.Mesh>(null);
+
+    const { completionPercentage } = todoState;
+    const targetLevel = Math.max(0, Math.min(1, completionPercentage / 100));
+    const targetLevelRef = React.useRef(targetLevel);
+    const animatedLevel = React.useRef(0);
+    const { invalidate } = useThree();
+
+    const geometrySegments = useMemo(() => {
+        switch (performanceLevel) {
+            case 'low': return 24;
+            case 'medium': return 32;
+            case 'high': return 48;
+            default: return 32;
+        }
+    }, [performanceLevel]);
+
+    // Keep a ref of latest target level for the frame loop
+    React.useEffect(() => {
+        targetLevelRef.current = Math.max(0, Math.min(1, completionPercentage / 100));
+        // Ensure at least one frame renders (important when frameloop is 'demand')
+        invalidate();
+        // Also set transforms immediately for correctness on very low devices
+        const scaleY = Math.max(targetLevelRef.current, 0.0001);
+        if (liquidRef.current) {
+            liquidRef.current.scale.set(1, scaleY, 1);
+            liquidRef.current.position.y = -2 + 2 * scaleY;
+        }
+        if (liquidTopRef.current) {
+            liquidTopRef.current.position.y = -2 + 4 * scaleY;
+            liquidTopRef.current.visible = targetLevelRef.current > 0.001;
+        }
+    }, [completionPercentage, invalidate]);
+
+    useFrame((state, delta) => {
+        if (!liquidRef.current || !groupRef.current) return;
+
+        const lerpFactor = Math.min(delta * 3, 1);
+        animatedLevel.current = THREE.MathUtils.lerp(animatedLevel.current, targetLevelRef.current, lerpFactor);
+
+        const scaleY = Math.max(animatedLevel.current, 0.0001);
+        // Scale the 4-unit-high liquid
+        liquidRef.current.scale.set(1, scaleY, 1);
+        // Keep base anchored to the bottom of glass
+        liquidRef.current.position.y = -2 + 2 * scaleY;
+
+        if (liquidTopRef.current) {
+            const wobble = performanceLevel === 'low' ? 0 : Math.sin(state.clock.elapsedTime * 2) * 0.03;
+            liquidTopRef.current.position.y = -2 + 4 * scaleY + wobble;
+            liquidTopRef.current.visible = animatedLevel.current > 0.001;
+            liquidTopRef.current.scale.set(1, 0.18, 1);
+        }
+
+        // Gentle idle motion
+        groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.08;
+        groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
+    });
+
+    const liquidColor = '#C2F1D5';
+
+    return (
+        <group ref={groupRef}>
+            {/* Render liquid first to avoid being occluded by the glass depth buffer */}
+            <mesh ref={liquidRef} position={[0, -2, 0]} renderOrder={1}>
+                {/* Base height 4; we scale Y 0..1 to match level */}
+                <cylinderGeometry args={[0.72, 0.72, 4, geometrySegments]} />
+                <meshStandardMaterial color={liquidColor} transparent opacity={0.9} emissive={liquidColor} emissiveIntensity={0.12} depthWrite />
+            </mesh>
+
+            {/* Curved top (meniscus) */}
+            <mesh ref={liquidTopRef} position={[0, -2, 0]} renderOrder={1}>
+                <sphereGeometry args={[0.72, geometrySegments, geometrySegments]} />
+                <meshStandardMaterial color={liquidColor} transparent opacity={0.85} depthWrite />
+            </mesh>
+
+            {/* Glass tube drawn after liquid; don't write depth so inner liquid stays visible */}
+            <mesh ref={glassRef} position={[0, 0, 0]} renderOrder={2}
+                onPointerEnter={() => setHoveredPriority(null)}
+                onPointerLeave={() => setHoveredPriority(null)}
+            >
+                <cylinderGeometry args={[0.82, 0.82, 4, geometrySegments]} />
+                <meshPhysicalMaterial
+                    color="#ffffff"
+                    transmission={0.6}
+                    transparent
+                    opacity={0.18}
+                    roughness={0.08}
+                    thickness={0.3}
+                    ior={1.2}
+                    metalness={0}
+                    depthWrite={false}
+                    side={THREE.DoubleSide}
+                />
+            </mesh>
+
+            {/* Teal cap at the top */}
+            <mesh position={[0, 2.15, 0]}>
+                <cylinderGeometry args={[0.83, 0.83, 0.18, geometrySegments]} />
+                <meshStandardMaterial color={liquidColor} />
+            </mesh>
+
+            {/* White base */}
+            <mesh position={[0, -2.35, 0]}>
+                <cylinderGeometry args={[0.9, 0.9, 0.7, geometrySegments]} />
+                <meshStandardMaterial color="#ffffff" />
+            </mesh>
+
+            <CelebrationParticles
+                isActive={completionPercentage >= 100}
+                performanceLevel={performanceLevel}
+                priorityCounts={todoState.priorityCounts}
+            />
+        </group>
     );
 });
 
@@ -542,7 +671,7 @@ function Scene({
                     color="#fbbf24"
                 />
             )}
-            <PriorityProgressBar
+            <GlassCylinderProgress
                 todoState={todoState}
                 performanceLevel={performanceLevel}
                 hoveredPriority={hoveredPriority}
@@ -701,7 +830,8 @@ export default function ProgressVisualization({ todoState }: ProgressVisualizati
                     shadows: false,
                     gl: { antialias: false, alpha: false, powerPreference: 'low-power' as const },
                     dpr: [0.5, 1] as [number, number],
-                    frameloop: 'demand' as const,
+                    // Use always to ensure progress updates render immediately
+                    frameloop: 'always' as const,
                 };
             case 'medium':
                 return {
